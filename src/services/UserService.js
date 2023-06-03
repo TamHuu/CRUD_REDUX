@@ -1,5 +1,5 @@
-import axios from "axios";
+import instance from "./customAxios";
 const fetchAllUser = () => {
-  return axios.get("https://reqres.in/api/users?page=1");
+  return instance.get("/api/users?page=2");
 };
 export { fetchAllUser };
