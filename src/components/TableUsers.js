@@ -9,10 +9,10 @@ const TableUsers = () => {
   useEffect(() => {
     getUsers(1);
   }, []);
-  console.log("check list user", listUser);
+
   const getUsers = async (page) => {
     let res = await fetchAllUser(page);
-    console.log(">>>>check new res", res);
+
     if (res && res.data) {
       setListUser(res.data);
       setTotalUser(res.total);
