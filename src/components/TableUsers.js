@@ -3,6 +3,10 @@ import { fetchAllUser } from "../services/UserService";
 import ReactPaginate from "https://cdn.skypack.dev/react-paginate@7.1.3";
 import Table from "react-bootstrap/Table";
 const TableUsers = () => {
+  const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
+  const handleClose = () => {
+    setIsShowModalAddNew(false);
+  };
   const [listUser, setListUser] = useState([]);
   const [totalUser, setTotalUser] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
