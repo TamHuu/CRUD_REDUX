@@ -6,6 +6,7 @@ import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
 import _ from "lodash";
 import ModalDeleteUser from "./ModalDeleteUser";
+import "./TableUser.scss";
 const TableUsers = () => {
   const [listUser, setListUser] = useState([]);
   const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
@@ -14,6 +15,16 @@ const TableUsers = () => {
   const [dataUserEdit, setDataUserEdit] = useState({});
   const [dataUserDelete, setDataUserDelete] = useState({});
   const [totalPage, setTotalPage] = useState(0);
+  const [sortBy, setSortBy] = useState("asc");
+  const [sortField, setSortField] = useState("asc");
+  const handleSort = (sortBy, sortField) => {
+    setSortBy(sortBy);
+    setSortField(sortField);
+    let cloneListuser = _.cloneDeep(listUser);
+    cloneListuser = _.orderBy(cloneListuser, [sortField], [sortBy]);
+    // update list user khi edit
+    setListUser(cloneListuser);
+  };
   useEffect(() => {
     getUsers(1);
   }, []);
@@ -54,6 +65,12 @@ const TableUsers = () => {
     setIsShowModalDelete(true);
     setDataUserDelete(user);
   };
+  const handleDeleteFromModal = (user) => {
+    let cloneListuser = _.cloneDeep(listUser);
+    cloneListuser = cloneListuser.filter((item) => item.id !== user.id);
+    // update list user khi edit
+    setListUser(cloneListuser);
+  };
   return (
     <>
       <div className="my-3 add-new">
@@ -70,11 +87,69 @@ const TableUsers = () => {
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Email</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Actions</th>
+            <th>
+              <div className="sort-header">
+                <span>ID</span>
+                <span>
+                  <i
+                    class="fa-solid fa-arrow-down-long"
+                    onClick={() => handleSort("desc", "id")}
+                  ></i>
+                  <i
+                    class="fa-solid fa-arrow-up-long"
+                    onClick={() => handleSort("asc", "id")}
+                  ></i>
+                </span>
+              </div>
+            </th>
+            <th>
+              <div className="sort-header">
+                <span>Email</span>
+                <span>
+                  <i
+                    class="fa-solid fa-arrow-down-long"
+                    onClick={() => handleSort("desc", "email")}
+                  ></i>
+                  <i
+                    class="fa-solid fa-arrow-up-long"
+                    onClick={() => handleSort("asc", "email")}
+                  ></i>
+                </span>
+              </div>
+            </th>
+            <th>
+              <div className="sort-header">
+                <span>First Name</span>
+                <span>
+                  <i
+                    class="fa-solid fa-arrow-down-long"
+                    onClick={() => handleSort("desc", "first_name")}
+                  ></i>
+                  <i
+                    class="fa-solid fa-arrow-up-long"
+                    onClick={() => handleSort("asc", "first_name")}
+                  ></i>
+                </span>
+              </div>
+            </th>
+            <th>
+              <div className="sort-header">
+                <span>Last Name</span>
+                <span>
+                  <i
+                    class="fa-solid fa-arrow-down-long"
+                    onClick={() => handleSort("desc", "last_name")}
+                  ></i>
+                  <i
+                    class="fa-solid fa-arrow-up-long"
+                    onClick={() => handleSort("asc", "last_name")}
+                  ></i>
+                </span>
+              </div>
+            </th>
+            <th style={{ textAlign: "center" }}>
+              <span>Actions</span>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -86,7 +161,7 @@ const TableUsers = () => {
                 <td>{item.email}</td>
                 <td>{item.first_name}</td>
                 <td>{item.last_name}</td>
-                <td>
+                <td style={{ textAlign: "center" }}>
                   <button
                     className="btn btn-warning mx-3"
                     onClick={() => handleModalEdit(item)}
@@ -139,6 +214,7 @@ const TableUsers = () => {
         show={isShowModalDelete}
         handleClose={handleClose}
         dataUserDelete={dataUserDelete}
+        handleDeleteFromModal={handleDeleteFromModal}
       />
     </>
   );
