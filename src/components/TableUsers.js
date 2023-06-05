@@ -5,12 +5,14 @@ import Table from "react-bootstrap/Table";
 import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
 import _ from "lodash";
+import ModalDeleteUser from "./ModalDeleteUser";
 const TableUsers = () => {
   const [listUser, setListUser] = useState([]);
   const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
   const [isShowModalEdit, setIsShowModalEdit] = useState(false);
+  const [isShowModalDelete, setIsShowModalDelete] = useState(false);
   const [dataUserEdit, setDataUserEdit] = useState({});
-
+  const [dataUserDelete, setDataUserDelete] = useState({});
   const [totalPage, setTotalPage] = useState(0);
   useEffect(() => {
     getUsers(1);
@@ -42,10 +44,15 @@ const TableUsers = () => {
   const handleClose = () => {
     setIsShowModalAddNew(false);
     setIsShowModalEdit(false);
+    setIsShowModalDelete(false);
   };
   const handleModalEdit = (user) => {
     setIsShowModalEdit(true);
     setDataUserEdit(user);
+  };
+  const handleModalDelete = (user) => {
+    setIsShowModalDelete(true);
+    setDataUserDelete(user);
   };
   return (
     <>
@@ -86,7 +93,12 @@ const TableUsers = () => {
                   >
                     Edit
                   </button>
-                  <button className="btn btn-danger ">Delete</button>
+                  <button
+                    className="btn btn-danger "
+                    onClick={() => handleModalDelete(item)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -122,6 +134,11 @@ const TableUsers = () => {
         dataUserEdit={dataUserEdit}
         handleClose={handleClose}
         handleEditFromModal={handleEditFromModal}
+      />
+      <ModalDeleteUser
+        show={isShowModalDelete}
+        handleClose={handleClose}
+        dataUserDelete={dataUserDelete}
       />
     </>
   );
