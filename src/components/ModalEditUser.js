@@ -39,7 +39,7 @@ function ModalEditUser(props) {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          <Form.Label htmlFor="job">id</Form.Label>
+          <Form.Label htmlFor="job">Job</Form.Label>
           <Form.Control
             type="text"
             value={job}
