@@ -6,3 +6,14 @@ i{
     cursor: pointer;
     padding: 0 2px;
 }
+.group-actions{
+display: flex;
+align-items: center;
+gap: 10px;
+
+}
+.paginate{
+
+    justify-content: center;
+    display: flex;
+}

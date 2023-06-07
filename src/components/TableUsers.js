@@ -8,6 +8,7 @@ import { debounce } from "lodash";
 import _ from "lodash";
 import ModalDeleteUser from "./ModalDeleteUser";
 import "./TableUser.scss";
+import { CSVLink } from "react-csv";
 const TableUsers = () => {
   const [listUser, setListUser] = useState([]);
   const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
@@ -18,7 +19,7 @@ const TableUsers = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [sortBy, setSortBy] = useState("asc");
   const [sortField, setSortField] = useState("asc");
-  const [filterUser, setFilterUser] = useState();
+
   const handleSort = (sortBy, sortField) => {
     setSortBy(sortBy);
     setSortField(sortField);
@@ -27,12 +28,14 @@ const TableUsers = () => {
     // update list user khi edit
     setListUser(cloneListuser);
   };
+
   useEffect(() => {
     getUsers(1);
   }, []);
   const handleUpdate = (user) => {
     setListUser([user, ...listUser]);
   };
+
   const handleEditFromModal = (user) => {
     // dung lodash clone object khong lam thay doi dia chi object kia
     let cloneListuser = _.cloneDeep(listUser);
@@ -41,6 +44,7 @@ const TableUsers = () => {
     // update list user khi edit
     setListUser(cloneListuser);
   };
+
   const getUsers = async (page) => {
     let res = await fetchAllUser(page);
 
@@ -50,6 +54,7 @@ const TableUsers = () => {
       setTotalPage(res.total_pages);
     }
   };
+
   const handlePageClick = (event) => {
     getUsers(+event.selected + 1);
   };
@@ -59,20 +64,24 @@ const TableUsers = () => {
     setIsShowModalEdit(false);
     setIsShowModalDelete(false);
   };
+
   const handleModalEdit = (user) => {
     setIsShowModalEdit(true);
     setDataUserEdit(user);
   };
+
   const handleModalDelete = (user) => {
     setIsShowModalDelete(true);
     setDataUserDelete(user);
   };
+
   const handleDeleteFromModal = (user) => {
     let cloneListuser = _.cloneDeep(listUser);
     cloneListuser = cloneListuser.filter((item) => item.id !== user.id);
     // update list user khi edit
     setListUser(cloneListuser);
   };
+
   const handleFilterUser = debounce((filterUser) => {
     let term = filterUser;
     if (term) {
@@ -83,19 +92,58 @@ const TableUsers = () => {
       getUsers(1);
     }
   }, 1000);
-
+  const [dataExport, setDataExport] = useState([]);
+  const getUsersExport = (event, done) => {
+    let result = [];
+    if (listUser && listUser.length > 0) {
+      result.push(["ID", "Email", "First name", "Last name"]);
+      listUser.map((item, index) => {
+        let arr = [];
+        arr[0] = item.id;
+        arr[1] = item.email;
+        arr[2] = item.first_name;
+        arr[3] = item.last_name;
+        result.push(arr);
+      });
+      setDataExport(result);
+      done();
+    }
+  };
   return (
     <>
       <div className="my-3 add-new">
         <span>
           <b>List Users:</b>
         </span>
-        <button
-          className="btn btn-success"
-          onClick={() => setIsShowModalAddNew(true)}
-        >
-          Add new user
-        </button>
+        <div className="group-actions">
+          <button
+            className="btn btn-success"
+            onClick={() => setIsShowModalAddNew(true)}
+          >
+            <i class="fa-solid fa-plus"></i>
+            Add new user
+          </button>
+          <CSVLink
+            data={dataExport}
+            filename={"my-file.csv"}
+            className="btn btn-primary"
+            target="_blank"
+            asyncOnClick={true}
+            onClick={getUsersExport}
+          >
+            <i className="fa-solid fa-file-export "></i>Export
+          </CSVLink>
+          <CSVLink
+            data={dataExport}
+            filename={"my-file.csv"}
+            className="btn btn-secondary"
+            target="_blank"
+            asyncOnClick={true}
+            onClick={getUsersExport}
+          >
+            <i className="fa-solid fa-file-import "></i>Import
+          </CSVLink>
+        </div>
       </div>
       <div className="col-4 my-3">
         <input
@@ -104,6 +152,7 @@ const TableUsers = () => {
           onChange={(e) => handleFilterUser(e.target.value)}
         />
       </div>
+
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -171,26 +220,29 @@ const TableUsers = () => {
             ))}
         </tbody>
       </Table>
-      <ReactPaginate
-        nextLabel="next >"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={3}
-        marginPagesDisplayed={2}
-        pageCount={totalPage}
-        previousLabel="< previous"
-        pageClassName="page-item"
-        pageLinkClassName="page-link"
-        previousClassName="page-item"
-        previousLinkClassName="page-link"
-        nextClassName="page-item"
-        nextLinkClassName="page-link"
-        breakLabel="..."
-        breakClassName="page-item"
-        breakLinkClassName="page-link"
-        containerClassName="pagination"
-        activeClassName="active"
-        renderOnZeroPageCount={null}
-      />
+      <div className="paginate">
+        <ReactPaginate
+          nextLabel="next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={3}
+          marginPagesDisplayed={2}
+          pageCount={totalPage}
+          previousLabel="< previous"
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          breakLabel="..."
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          containerClassName="pagination"
+          activeClassName="active"
+          renderOnZeroPageCount={null}
+        />
+      </div>
+
       <ModalAddNew
         show={isShowModalAddNew}
         handleClose={handleClose}
