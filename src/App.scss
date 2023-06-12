@@ -1,23 +1,90 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 .app-container {
-
-
   .add-new {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 16px;
+    padding: 20px;
+
+    margin: 0 auto;
+    .login-title {
+      text-align: center;
+      font-weight: 400;
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+    .input-email {
+      padding: 7px;
+      outline: none;
+      margin-bottom: 16px;
+      width: 100%;
+      &:hover {
+        border-radius: 7px;
+        cursor: pointer;
+      }
+    }
+    .input-password {
+      padding: 7px;
+      outline: none;
+      margin-bottom: 16px;
+      width: 100%;
+      &:hover {
+        border-radius: 7px;
+        cursor: pointer;
+      }
+    }
+    .active-1 {
+      padding: 7px;
+      border: none;
+      outline: none;
+      margin-bottom: 16px;
+      border-radius: 7px;
+      background-color: #fe2c55;
+      color: white;
+    }
+    .active-2 {
+      padding: 7px;
+      border: none;
+      outline: none;
+      margin-bottom: 16px;
+      border-radius: 7px;
+
+     
+    }
+    .back {
+      text-align: center;
+    }
+    .text {
+      margin-bottom: 8px;
+    }
+    .contain-input-password {
+      position: relative;
+      i {
+        position: absolute;
+        top: 13px;
+        right: 20px;
+      }
+    }
+
+  }
+  button[disabled=disabled], button:disabled {
+    cursor: not-allowed;
+}
 }

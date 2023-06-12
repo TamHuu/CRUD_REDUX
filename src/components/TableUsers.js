@@ -120,7 +120,7 @@ const TableUsers = () => {
             className="btn btn-success"
             onClick={() => setIsShowModalAddNew(true)}
           >
-            <i class="fa-solid fa-plus"></i>
+            <i className="fa-solid fa-plus"></i>
             Add new user
           </button>
           <CSVLink
