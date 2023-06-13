@@ -17,7 +17,7 @@ const Login = () => {
       toast.error("Password and Email is required !!!");
     }
     setIsLoadingApi(true);
-    let res = await loginApi(email, password);
+    let res = await loginApi(email.trim(), password);
     if (res && res.token) {
       handleLoginContext(email, res.token);
       toast.success("Login Succed");
@@ -31,6 +31,11 @@ const Login = () => {
   };
   const handleGoBack = () => {
     navigate("/");
+  };
+  const handlePressEnter = (event) => {
+    if (event && event.key === "Enter") {
+      handleLogin();
+    }
   };
   return (
     <div className="login-container col-xs-12 col-md-6 col-lg-4 ">
@@ -46,6 +51,7 @@ const Login = () => {
       <div className="text">Password</div>
       <div className="contain-input-password">
         <input
+          onKeyDown={(event) => handlePressEnter(event)}
           type={isShowPassword ? "text" : "password"}
           value={password}
           onChange={(event) => setPassword(event.target.value)}
