@@ -11,7 +11,7 @@ function ModalAddNew(props) {
 
   const handleSaveUser = async () => {
     let res = await postCreateUser(name, job);
-    console.log(res);
+
     if (res && res.id) {
       handleClose();
       setName("");

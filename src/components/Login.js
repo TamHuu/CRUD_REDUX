@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { loginApi } from "../services/UserService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isLoadingAPI, setIsLoadingApi] = useState(false);
+  const { handleLoginContext } = useContext(UserContext);
   // Khi đã đăng nhập rồi sẽ chặn không cho người dùng vào lại trang login mà chuyển sang trang home
-  useEffect(() => {
-    let token = localStorage.getItem("token");
-    if (token) {
-      navigate("/");
-    }
-  }, []);
+
   const handleLogin = async () => {
     if (!email || !password) {
       toast.error("Password and Email is required !!!");
@@ -22,7 +19,7 @@ const Login = () => {
     setIsLoadingApi(true);
     let res = await loginApi(email, password);
     if (res && res.token) {
-      localStorage.setItem("token", res.token);
+      handleLoginContext(email, res.token);
       toast.success("Login Succed");
       navigate("/");
     } else {
@@ -31,6 +28,9 @@ const Login = () => {
       }
     }
     setIsLoadingApi(false);
+  };
+  const handleGoBack = () => {
+    navigate("/");
   };
   return (
     <div className="login-container col-xs-12 col-md-6 col-lg-4 ">
@@ -71,8 +71,8 @@ const Login = () => {
         {isLoadingAPI && <i className="fa-solid fa-sync fa-spin"></i>}
         &nbsp; Login
       </button>
-      <div className="back">
-        <i className="fa-solid fa-angles-left"></i>Go back
+      <div className="go-back" onClick={() => handleGoBack()}>
+        <i className="fa-solid fa-angles-left"></i>&nbsp;Go back
       </div>
     </div>
   );

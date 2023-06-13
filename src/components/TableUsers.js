@@ -97,13 +97,13 @@ const TableUsers = () => {
     let result = [];
     if (listUser && listUser.length > 0) {
       result.push(["ID", "Email", "First name", "Last name"]);
-      listUser.map((item, index) => {
+      listUser.map((item) => {
         let arr = [];
         arr[0] = item.id;
         arr[1] = item.email;
         arr[2] = item.first_name;
         arr[3] = item.last_name;
-        result.push(arr);
+        return result.push(arr);
       });
       setDataExport(result);
       done();
@@ -114,6 +114,7 @@ const TableUsers = () => {
       <div className="my-3 add-new">
         <span>
           <b>List Users:</b>
+          <span>{sortBy && sortField}</span>
         </span>
         <div className="group-actions">
           <button
@@ -196,28 +197,30 @@ const TableUsers = () => {
         <tbody>
           {listUser &&
             listUser.length > 0 &&
-            listUser.map((item, index) => (
-              <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.email}</td>
-                <td>{item.first_name}</td>
-                <td>{item.last_name}</td>
-                <td>
-                  <button
-                    className="btn btn-warning mx-3"
-                    onClick={() => handleModalEdit(item)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn btn-danger "
-                    onClick={() => handleModalDelete(item)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
+            listUser.map((item) => {
+              return (
+                <tr key={item.id}>
+                  <td>{item.id}</td>
+                  <td>{item.email}</td>
+                  <td>{item.first_name}</td>
+                  <td>{item.last_name}</td>
+                  <td>
+                    <button
+                      className="btn btn-warning mx-3"
+                      onClick={() => handleModalEdit(item)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn btn-danger "
+                      onClick={() => handleModalDelete(item)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </Table>
       <div className="paginate">

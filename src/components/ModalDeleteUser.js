@@ -7,7 +7,7 @@ function ModalDeleteUser(props) {
   const { show, handleClose, dataUserDelete, handleDeleteFromModal } = props;
   const ConfirmDelete = async () => {
     let res = await deteleUser(dataUserDelete);
-    console.log(res);
+
     if (res && +res.statusCode === 204) {
       handleClose();
       toast.success("Delete a user succed !");

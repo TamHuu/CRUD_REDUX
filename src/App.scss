@@ -87,4 +87,12 @@ code {
   button[disabled=disabled], button:disabled {
     cursor: not-allowed;
 }
+.home-container{
+  margin-top: 20px;
+}
+
+.go-back{
+  cursor: pointer;
+  text-align: center;
+}
 }
