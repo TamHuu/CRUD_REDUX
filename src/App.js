@@ -5,8 +5,10 @@ import { ToastContainer } from "react-toastify";
 import { useContext, useEffect } from "react";
 import { UserContext } from "./context/UserContext";
 import AppRoutes from "./routes/AppRoutes";
-
+import { useSelector } from "react-redux";
 function App() {
+  const dataUserRedux = useSelector((state) => state.user.account);
+  console.log(">>>>> check data redux", dataUserRedux);
   const { user, handleLoginContext } = useContext(UserContext);
   console.log(">>>>>> check use context", user);
   useEffect(() => {
@@ -16,7 +18,7 @@ function App() {
         localStorage.getItem("token")
       );
     }
-  });
+  }, []);
   return (
     <>
       <div className="app-container">
