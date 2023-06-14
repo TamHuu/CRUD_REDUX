@@ -16,7 +16,7 @@ const Header = () => {
     dispatch(handleLogoutRedux());
   };
   useEffect(() => {
-    if (user && user.auth === false) {
+    if (user && user.auth === false && window.location.pathname !== "/login") {
       navigate("/");
       toast.success("Logout succed");
     }
