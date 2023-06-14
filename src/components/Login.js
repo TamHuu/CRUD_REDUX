@@ -1,34 +1,29 @@
-import React, { useContext, useState } from "react";
-import { loginApi } from "../services/UserService";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../context/UserContext";
+import { useDispatch, useSelector } from "react-redux";
+import { handleLoginRedux } from "../redux/actions/userAction";
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
-  const [isLoadingAPI, setIsLoadingApi] = useState(false);
-  const { handleLoginContext } = useContext(UserContext);
-  // Khi đã đăng nhập rồi sẽ chặn không cho người dùng vào lại trang login mà chuyển sang trang home
+  const isLoading = useSelector((state) => state.user.isLoading);
+  const account = useSelector((state) => state.user.account);
 
+  const dispatch = useDispatch();
   const handleLogin = async () => {
     if (!email || !password) {
       toast.error("Password and Email is required !!!");
     }
-    setIsLoadingApi(true);
-    let res = await loginApi(email.trim(), password);
-    if (res && res.token) {
-      handleLoginContext(email, res.token);
-      toast.success("Login Succed");
-      navigate("/");
-    } else {
-      if (res && res.status === 400) {
-        toast.error(res.data.error);
-      }
-    }
-    setIsLoadingApi(false);
+    dispatch(handleLoginRedux(email, password));
   };
+
+  useEffect(() => {
+    if (account && account.auth === true) {
+      navigate("/");
+    }
+  }, [account]);
   const handleGoBack = () => {
     navigate("/");
   };
@@ -74,7 +69,7 @@ const Login = () => {
         disabled={email && password ? false : true}
         className={email && password ? "active-1" : "active-2"}
       >
-        {isLoadingAPI && <i className="fa-solid fa-sync fa-spin"></i>}
+        {isLoading && <i className="fa-solid fa-sync fa-spin"></i>}
         &nbsp; Login
       </button>
       <div className="go-back" onClick={() => handleGoBack()}>

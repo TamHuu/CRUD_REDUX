@@ -1,23 +1,69 @@
-import { USER_LOGIN, USER_LOGOUT } from "../actions/userAction";
+import {
+  FETCH_USER_LOGIN,
+  FETCH_USER_LOGIN_ERROR,
+  FETCH_USER_LOGIN_SUCCESS,
+  FETCH_USER_LOGOUT,
+  FETCH_USER_REFRESH,
+} from "../actions/userAction";
 
 const INIT_STATE = {
   account: {
-    email: "tamle2603",
-    auth: false,
+    email: "",
+    auth: null,
+    token: "",
   },
+  isLoading: false,
+  isError: false,
 };
-const email = "abcccc";
+
 const userReducer = (state = INIT_STATE, action) => {
   switch (action.type) {
-    case USER_LOGIN:
+    case FETCH_USER_LOGIN:
       return {
-        email: email,
-        auth: true,
+        ...state,
+        isLoading: true,
+        isError: false,
       };
-    case USER_LOGOUT:
+    case FETCH_USER_LOGIN_ERROR:
       return {
-        email: "",
-        auth: false,
+        ...state,
+        account: {
+          auth: false,
+        },
+        isLoading: false,
+        isError: true,
+      };
+    case FETCH_USER_LOGIN_SUCCESS:
+      console.log(">>>> check redux success");
+      return {
+        ...state,
+        account: {
+          email: action.data.email,
+          token: action.data.token,
+          auth: true,
+        },
+        isLoading: false,
+        isError: false,
+      };
+    case FETCH_USER_LOGOUT:
+      localStorage.removeItem("token");
+      localStorage.removeItem("email");
+      return {
+        ...state,
+        account: {
+          email: "",
+          token: "",
+          auth: false,
+        },
+      };
+    case FETCH_USER_REFRESH:
+      return {
+        ...state,
+        account: {
+          email: localStorage.getItem("email"),
+          token: localStorage.getItem("token"),
+          auth: true,
+        },
       };
     default:
       return state;
