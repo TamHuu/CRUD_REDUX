@@ -22,7 +22,7 @@ export const handleLoginRedux = (email, password) => {
           token: res.token,
         },
       });
-      toast.success("Login Succed");
+      toast.success("Login Succeed");
     } else {
       if (res && res.status === 400) {
         toast.error(res.data.error);

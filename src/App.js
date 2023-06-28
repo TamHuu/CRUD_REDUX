@@ -13,7 +13,7 @@ function App() {
     if (localStorage.getItem("token")) {
       dispatch(handleRefresh());
     }
-  }, []);
+  }, [dispatch]);
   return (
     <>
       <div className="app-container">

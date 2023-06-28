@@ -12,7 +12,8 @@ const Login = () => {
   const account = useSelector((state) => state.user.account);
 
   const dispatch = useDispatch();
-  const handleLogin = async () => {
+  const handleLogin = async (event) => {
+    console.log(">>>>check event", event);
     if (!email || !password) {
       toast.error("Password and Email is required !!!");
     }
@@ -23,7 +24,7 @@ const Login = () => {
     if (account && account.auth === true) {
       navigate("/");
     }
-  }, [account]);
+  }, [account, navigate]);
   const handleGoBack = () => {
     navigate("/");
   };
@@ -65,7 +66,7 @@ const Login = () => {
       </div>
 
       <button
-        onClick={() => handleLogin()}
+        onClick={(event) => handleLogin(event)}
         disabled={email && password ? false : true}
         className={email && password ? "active-1" : "active-2"}
       >
