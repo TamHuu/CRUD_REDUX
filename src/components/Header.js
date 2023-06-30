@@ -26,7 +26,7 @@ const Header = () => {
       <Navbar bg="light" expand="lg">
         <Container>
           <NavLink className="navbar-brand" to="/">
-            Le Huu Tam Dev 2000
+            Le Huu Tam Dev 2000 ne
           </NavLink>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
