@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchAllUser } from "../services/UserService";
-import ReactPaginate from "https://cdn.skypack.dev/react-paginate@7.1.3";
+import ReactPaginate from "react-paginate";
 import Table from "react-bootstrap/Table";
 import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
@@ -134,7 +134,7 @@ const TableUsers = () => {
             asyncOnClick={true}
             onClick={getUsersExport}
           >
-            <i className="fa-solid fa-file-export "></i>Export
+            <i className="fa-solid fa-file-export"></i>Export
           </CSVLink>
           <CSVLink
             data={dataExport}
@@ -144,7 +144,7 @@ const TableUsers = () => {
             asyncOnClick={true}
             onClick={getUsersExport}
           >
-            <i className="fa-solid fa-file-import "></i>Import
+            <i className="fa-solid fa-file-import"></i>Import
           </CSVLink>
         </div>
       </div>
